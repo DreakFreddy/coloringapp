@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Coloring Page Generator</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 20px; }
+    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 20px; }
+    .image-container { display: flex; flex-direction: column; align-items: center; }
+    img { max-width: 300px; border: 1px solid #ccc; }
+    button { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Upload Images to Create Coloring Pages</h1>
+  <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="images" multiple accept="image/*">
+    <button type="submit">Upload & Convert</button>
+  </form>
+
+  {% if files %}
+    <h2>Processed Images</h2>
+    <div class="gallery">
+      {% for file in files %}
+        <div class="image-container">
+          <img src="{{ url_for('static', filename='processed/' + file) }}" alt="Processed Image">
+          <a href="{{ url_for('download_file', filename=file) }}">
+            <button>Download</button>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+    <br>
+    <a href="{{ url_for('download_all') }}">
+      <button>Download All as ZIP</button>
+    </a>
+  {% endif %}
+</body>
+</html>
